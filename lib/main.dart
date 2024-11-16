@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'pages/product_page.dart';
-import 'pages/restaurant_page.dart';
-import 'pages/menu_page.dart';
-import 'pages/recipe_page.dart';
-import 'pages/info_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:halal_japan_recorded/simple_bloc_observer.dart';
+import 'screens/product/product_page.dart';
+import 'screens/restaurant/restaurant_page.dart';
+import 'screens/menu/menu_page.dart';
+import 'screens/recipe/recipe_page.dart';
+import 'screens/info/info_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  Bloc.observer = SimpleBlocObserver();
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:halal_japan_recorded/pages/product_item.dart';
+import 'package:halal_japan_recorded/screens/product/product_item.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
