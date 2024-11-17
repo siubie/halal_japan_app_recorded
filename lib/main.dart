@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:halal_japan_recorded/blocs/product/product_bloc.dart';
+import 'package:halal_japan_recorded/repositories/product_repository.dart';
 import 'package:halal_japan_recorded/simple_bloc_observer.dart';
 import 'screens/product/product_page.dart';
 import 'screens/restaurant/restaurant_page.dart';
@@ -10,7 +12,16 @@ import 'screens/info/info_page.dart';
 void main() {
   Bloc.observer = SimpleBlocObserver();
   runApp(
-    const MyApp(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<ProductBloc>(
+          create: (context) => ProductBloc(
+            productRepository: ProductRepository(),
+          ),
+        ),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

@@ -11,7 +11,7 @@ String productResponseToJson(ProductResponse data) =>
     json.encode(data.toJson());
 
 class ProductResponse {
-  List<Datum>? data;
+  List<Product>? data;
   Links? links;
   Meta? meta;
 
@@ -25,7 +25,7 @@ class ProductResponse {
       ProductResponse(
         data: json["data"] == null
             ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<Product>.from(json["data"]!.map((x) => Product.fromJson(x))),
         links: json["links"] == null ? null : Links.fromJson(json["links"]),
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
       );
@@ -39,7 +39,7 @@ class ProductResponse {
       };
 }
 
-class Datum {
+class Product {
   int? id;
   String? name;
   String? barcode;
@@ -49,7 +49,7 @@ class Datum {
   Status? status;
   CompanyId? companyId;
 
-  Datum({
+  Product({
     this.id,
     this.name,
     this.barcode,
@@ -60,7 +60,7 @@ class Datum {
     this.companyId,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         name: json["name"],
         barcode: json["barcode"],

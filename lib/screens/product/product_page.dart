@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:halal_japan_recorded/repositories/product_repository.dart';
-import 'package:halal_japan_recorded/models/product_response.dart';
-import 'package:halal_japan_recorded/screens/product/product_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:halal_japan_recorded/blocs/product/product_bloc.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -11,33 +10,40 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  final ProductRepository _productRepository = ProductRepository();
+  //call product fetch event
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductBloc>().add(ProductFetch());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ProductResponse>(
-      future: _productRepository.fetchProducts(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final products = snapshot.data!.data?.length;
-          //create listview builder using ProductItem widget
+    //return bloc builder
+    return BlocBuilder<ProductBloc, ProductState>(
+      builder: (context, state) {
+        if (state is ProductLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is ProductLoaded) {
           return ListView.builder(
-            itemCount: products,
+            itemCount: state.products.length,
             itemBuilder: (context, index) {
-              final product = snapshot.data!.data![index];
-              return ProductItem(
-                title: product.name ?? 'No title',
-                imageUrl: product.image ?? 'default_image_url',
-                price: 1000,
+              final product = state.products[index];
+              return ListTile(
+                title: Text(product.name ?? ""),
               );
             },
           );
+        } else if (state is ProductError) {
+          return Center(
+            child: Text(state.message),
+          );
         } else {
-          return const Center(child: Text('No products found'));
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
       },
     );
