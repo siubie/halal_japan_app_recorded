@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:halal_japan_recorded/core/config/api_config.dart';
 import 'package:halal_japan_recorded/core/network/dio_client.dart';
-import 'package:halal_japan_recorded/models/product_response.dart';
 
 class ApiService {
   final DioClient _dioClient;
