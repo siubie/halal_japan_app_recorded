@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:halal_japan_recorded/screens/product/product_item.dart';
+import 'package:halal_japan_recorded/repositories/product_repository.dart';
+import 'package:halal_japan_recorded/models/product_response.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -9,33 +10,27 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  //generate 20 dummy products data
-  final List<Map<String, dynamic>> _products = List.generate(
-    20,
-    (index) => {
-      'id': index,
-      'title': 'Product ${index + 1}',
-      'imageUrl': 'https://picsum.photos/150?random=$index',
-      'price': (index + 1) * 9.99,
-    },
-  );
+  final ProductRepository _productRepository = ProductRepository();
 
   @override
   Widget build(BuildContext context) {
-    //use listview.builder to display the products
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView.builder(
-        itemCount: _products.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ProductItem(
-              title: _products[index]['title'],
-              imageUrl: _products[index]['imageUrl'],
-              price: _products[index]['price'],
-            ),
-          );
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product Page'),
+      ),
+      body: FutureBuilder<ProductResponse>(
+        future: _productRepository.fetchProducts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final products = snapshot.data!.data?.length;
+            return Text('Products: Ada jumlahnya $products');
+          } else {
+            return const Center(child: Text('No products found'));
+          }
         },
       ),
     );
