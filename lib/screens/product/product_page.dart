@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:halal_japan_recorded/blocs/product/product_bloc.dart';
+import 'package:halal_japan_recorded/models/product_response.dart';
+import 'package:halal_japan_recorded/screens/product/product_item.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
@@ -31,8 +33,10 @@ class _ProductPageState extends State<ProductPage> {
             itemCount: state.products.length,
             itemBuilder: (context, index) {
               final product = state.products[index];
-              return ListTile(
-                title: Text(product.name ?? ""),
+              return ProductItem(
+                title: product.name ?? '',
+                imageUrl: product.image ?? '',
+                subtitle: product.status ?? Status.HARAM,
               );
             },
           );
