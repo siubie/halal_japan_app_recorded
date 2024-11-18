@@ -29,16 +29,40 @@ class _ProductPageState extends State<ProductPage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is ProductLoaded) {
-          return ListView.builder(
-            itemCount: state.products.length,
-            itemBuilder: (context, index) {
-              final product = state.products[index];
-              return ProductItem(
-                title: product.name ?? '',
-                imageUrl: product.image ?? '',
-                subtitle: product.status ?? Status.HARAM,
-              );
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<ProductBloc>().add(ProductFetch());
             },
+            child: ListView.builder(
+              itemCount: state.products.length + 1,
+              itemBuilder: (context, index) {
+                if (index >= state.products.length) {
+                  //return button to load more page
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<ProductBloc>().add(ProductFetch());
+                        },
+                        child: const Text('Load More'),
+                      ),
+                    ),
+                  );
+                  // show progres indicator
+                  // return const Center(
+                  //   child: CircularProgressIndicator(),
+                  // );
+                } else {
+                  final product = state.products[index];
+                  return ProductItem(
+                    title: product.name ?? '',
+                    imageUrl: product.image ?? '',
+                    subtitle: product.status ?? Status.HARAM,
+                  );
+                }
+              },
+            ),
           );
         } else if (state is ProductError) {
           return Center(
