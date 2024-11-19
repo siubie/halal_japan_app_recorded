@@ -34,16 +34,20 @@ class _ProductPageState extends State<ProductPage> {
               context.read<ProductBloc>().add(ProductFetch());
             },
             child: ListView.builder(
-              itemCount: state.products.length + 1,
+              itemCount: state.hasReachedMax
+                  ? state.products.length
+                  : state.products.length + 1,
               itemBuilder: (context, index) {
-                if (index >= state.products.length) {
+                if (index >= state.products.length && !state.hasReachedMax) {
                   //return button to load more page
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          context.read<ProductBloc>().add(ProductFetch());
+                          context.read<ProductBloc>().add(
+                                ProductFetchNextPage(),
+                              );
                         },
                         child: const Text('Load More'),
                       ),

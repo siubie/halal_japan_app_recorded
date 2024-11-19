@@ -7,9 +7,15 @@ class ApiService {
 
   ApiService() : _dioClient = DioClient();
 
-  Future<Response> getProducts() async {
+  Future<Response> getProducts({
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     try {
-      final response = await _dioClient.get(ApiConfig.products);
+      final response = await _dioClient.get(ApiConfig.products,
+          queryParameters: queryParameters);
       return response;
     } on DioException catch (e) {
       // Handle Dio-specific exceptions if needed

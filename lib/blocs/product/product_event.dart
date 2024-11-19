@@ -8,3 +8,5 @@ sealed class ProductEvent extends Equatable {
 }
 
 final class ProductFetch extends ProductEvent {}
+
+final class ProductFetchNextPage extends ProductEvent {}

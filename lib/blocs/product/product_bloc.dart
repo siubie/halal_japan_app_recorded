@@ -14,8 +14,43 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       emit(ProductLoading());
       try {
         //call product repository
-        final products = await productRepository.fetchProducts();
-        emit(ProductLoaded(products.data ?? []));
+        final ProductResponse products =
+            await productRepository.fetchProducts();
+        //get the current page from products
+        final int? currentPage = products.meta!.currentPage;
+        //get the has reached max from products
+        final bool hasReachedMax = products.meta?.lastPage == currentPage;
+        emit(
+          ProductLoaded(
+              products: products.data ?? [],
+              hasReachedMax: hasReachedMax,
+              currentPage: currentPage!),
+        );
+      } catch (e) {
+        emit(ProductError(e.toString()));
+      }
+    });
+    on<ProductFetchNextPage>((event, emit) async {
+      try {
+        final state = this.state as ProductLoaded;
+        //create query parameters
+        final Map<String, dynamic> queryParameters = {
+          'page': state.currentPage + 1,
+        };
+        //call product repository
+        final ProductResponse products = await productRepository.fetchProducts(
+            queryParameters: queryParameters);
+        //get the current page from products
+        final int? currentPage = products.meta!.currentPage;
+        //get the has reached max from products
+        final bool hasReachedMax = products.meta?.lastPage == currentPage;
+        emit(
+          ProductLoaded(
+              // products: [...state.products, ...?products.data],
+              products: products.data ?? [],
+              hasReachedMax: hasReachedMax,
+              currentPage: currentPage!),
+        );
       } catch (e) {
         emit(ProductError(e.toString()));
       }

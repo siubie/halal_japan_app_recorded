@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:halal_japan_recorded/core/network/exeption/api_exeption.dart';
 import 'package:halal_japan_recorded/core/services/api_service.dart';
 import 'package:halal_japan_recorded/models/product_response.dart';
@@ -7,9 +8,15 @@ class ProductRepository {
 
   ProductRepository() : _apiService = ApiService();
 
-  Future<ProductResponse> fetchProducts() async {
+  Future<ProductResponse> fetchProducts({
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
     return _handleApiCall(() async {
-      final response = await _apiService.getProducts();
+      final response =
+          await _apiService.getProducts(queryParameters: queryParameters);
       return ProductResponse.fromJson(response.data);
     });
   }
