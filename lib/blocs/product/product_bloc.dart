@@ -46,8 +46,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final bool hasReachedMax = products.meta?.lastPage == currentPage;
         emit(
           ProductLoaded(
-              // products: [...state.products, ...?products.data],
-              products: products.data ?? [],
+              products: [...state.products, ...?products.data],
+              // products: products.data ?? [],
               hasReachedMax: hasReachedMax,
               currentPage: currentPage!),
         );
