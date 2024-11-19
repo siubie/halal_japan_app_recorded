@@ -14,8 +14,10 @@ class ApiService {
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      final response = await _dioClient.get(ApiConfig.products,
-          queryParameters: queryParameters);
+      final response = await _dioClient.get(
+        ApiConfig.products,
+        queryParameters: queryParameters,
+      );
       return response;
     } on DioException catch (e) {
       // Handle Dio-specific exceptions if needed

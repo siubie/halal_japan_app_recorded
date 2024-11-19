@@ -40,23 +40,26 @@ class _ProductPageState extends State<ProductPage> {
               itemBuilder: (context, index) {
                 if (index >= state.products.length && !state.hasReachedMax) {
                   //return button to load more page
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.read<ProductBloc>().add(
-                                ProductFetchNextPage(),
-                              );
-                        },
-                        child: const Text('Load More'),
-                      ),
-                    ),
-                  );
-                  // show progres indicator
-                  // return const Center(
-                  //   child: CircularProgressIndicator(),
+                  // return Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Center(
+                  //     child: ElevatedButton(
+                  //       onPressed: () {
+                  //         context.read<ProductBloc>().add(
+                  //               ProductFetchNextPage(),
+                  //             );
+                  //       },
+                  //       child: const Text('Load More'),
+                  //     ),
+                  //   ),
                   // );
+                  // show progres indicator
+                  context.read<ProductBloc>().add(
+                        ProductFetchNextPage(),
+                      );
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else {
                   final product = state.products[index];
                   return ProductItem(
