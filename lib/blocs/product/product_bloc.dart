@@ -30,6 +30,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductError(e.toString()));
       }
     });
+
     on<ProductFetchNextPage>((event, emit) async {
       try {
         final state = this.state as ProductLoaded;

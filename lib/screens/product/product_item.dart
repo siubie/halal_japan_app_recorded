@@ -16,7 +16,13 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       subtitle: Builder(
         builder: (context) {
           switch (subtitle) {
