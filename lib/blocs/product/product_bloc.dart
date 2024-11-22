@@ -56,5 +56,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(ProductError(e.toString()));
       }
     });
+
+    on<ProductSearch>((event, emit) async {
+      //when search event is called, emit loading state
+      emit(ProductLoading());
+    });
   }
 }

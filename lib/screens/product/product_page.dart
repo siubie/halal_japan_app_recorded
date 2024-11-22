@@ -45,7 +45,14 @@ class _ProductPageState extends State<ProductPage> {
           IconButton(
             onPressed: () {
               //print search input
-              print(_searchController.text);
+              // print(_searchController.text);
+              //check if search input is empty
+              if (_searchController.text.isNotEmpty) {
+                context.read<ProductBloc>().add(
+                      ProductSearch(query: _searchController.text),
+                    );
+              }
+              //call product search event
             },
             icon: const Icon(Icons.search),
           ),
