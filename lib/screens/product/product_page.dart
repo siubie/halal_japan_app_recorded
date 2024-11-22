@@ -24,7 +24,23 @@ class _ProductPageState extends State<ProductPage> {
     //return bloc builder
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product'),
+        title: const TextField(
+          decoration: InputDecoration(
+            hintText: 'Search Product Or Scan Barcode',
+            border: InputBorder.none,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search),
+          ),
+          //icon button to scan barcode
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.qr_code),
+          ),
+        ],
       ),
       body: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
