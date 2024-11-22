@@ -22,65 +22,70 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     //return bloc builder
-    return BlocBuilder<ProductBloc, ProductState>(
-      builder: (context, state) {
-        if (state is ProductLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ProductLoaded) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<ProductBloc>().add(ProductFetch());
-            },
-            child: ListView.builder(
-              itemCount: state.hasReachedMax
-                  ? state.products.length
-                  : state.products.length + 1,
-              itemBuilder: (context, index) {
-                if (index >= state.products.length && !state.hasReachedMax) {
-                  //return button to load more page
-                  // return Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Center(
-                  //     child: ElevatedButton(
-                  //       onPressed: () {
-                  //         context.read<ProductBloc>().add(
-                  //               ProductFetchNextPage(),
-                  //             );
-                  //       },
-                  //       child: const Text('Load More'),
-                  //     ),
-                  //   ),
-                  // );
-                  // show progres indicator
-                  context.read<ProductBloc>().add(
-                        ProductFetchNextPage(),
-                      );
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  final product = state.products[index];
-                  return ProductItem(
-                    title: product.name ?? '',
-                    imageUrl: product.image ?? '',
-                    subtitle: product.status ?? Status.HARAM,
-                  );
-                }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product'),
+      ),
+      body: BlocBuilder<ProductBloc, ProductState>(
+        builder: (context, state) {
+          if (state is ProductLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is ProductLoaded) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ProductBloc>().add(ProductFetch());
               },
-            ),
-          );
-        } else if (state is ProductError) {
-          return Center(
-            child: Text(state.message),
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+              child: ListView.builder(
+                itemCount: state.hasReachedMax
+                    ? state.products.length
+                    : state.products.length + 1,
+                itemBuilder: (context, index) {
+                  if (index >= state.products.length && !state.hasReachedMax) {
+                    //return button to load more page
+                    // return Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: Center(
+                    //     child: ElevatedButton(
+                    //       onPressed: () {
+                    //         context.read<ProductBloc>().add(
+                    //               ProductFetchNextPage(),
+                    //             );
+                    //       },
+                    //       child: const Text('Load More'),
+                    //     ),
+                    //   ),
+                    // );
+                    // show progres indicator
+                    context.read<ProductBloc>().add(
+                          ProductFetchNextPage(),
+                        );
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    final product = state.products[index];
+                    return ProductItem(
+                      title: product.name ?? '',
+                      imageUrl: product.image ?? '',
+                      subtitle: product.status ?? Status.HARAM,
+                    );
+                  }
+                },
+              ),
+            );
+          } else if (state is ProductError) {
+            return Center(
+              child: Text(state.message),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
     );
   }
 }
