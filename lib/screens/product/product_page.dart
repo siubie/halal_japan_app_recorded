@@ -51,6 +51,8 @@ class _ProductPageState extends State<ProductPage> {
                 context.read<ProductBloc>().add(
                       ProductSearch(query: _searchController.text),
                     );
+              } else {
+                context.read<ProductBloc>().add(ProductFetch());
               }
               //call product search event
             },

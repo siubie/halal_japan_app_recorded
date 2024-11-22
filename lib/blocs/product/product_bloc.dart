@@ -58,8 +58,29 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     });
 
     on<ProductSearch>((event, emit) async {
-      //when search event is called, emit loading state
-      emit(ProductLoading());
+      try {
+        //when search event is called, emit loading state
+        emit(ProductLoading());
+        //create query parameters
+        final Map<String, dynamic> queryParameters = {
+          'filter[name]': event.query,
+        };
+        //call product repository
+        final ProductResponse products = await productRepository.fetchProducts(
+            queryParameters: queryParameters);
+        //get the current page from products
+        final int? currentPage = products.meta!.currentPage;
+        //get the has reached max from products
+        final bool hasReachedMax = products.meta?.lastPage == currentPage;
+        emit(
+          ProductLoaded(
+              products: products.data ?? [],
+              hasReachedMax: hasReachedMax,
+              currentPage: currentPage!),
+        );
+      } catch (e) {
+        emit(ProductError(e.toString()));
+      }
     });
   }
 }
