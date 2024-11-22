@@ -12,6 +12,16 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
+  //add text controller for search input
+  final TextEditingController _searchController = TextEditingController();
+
+  //add dispose method to dispose text controller
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   //call product fetch event
   @override
   void initState() {
@@ -24,15 +34,19 @@ class _ProductPageState extends State<ProductPage> {
     //return bloc builder
     return Scaffold(
       appBar: AppBar(
-        title: const TextField(
-          decoration: InputDecoration(
+        title: TextField(
+          controller: _searchController,
+          decoration: const InputDecoration(
             hintText: 'Search Product Or Scan Barcode',
             border: InputBorder.none,
           ),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              //print search input
+              print(_searchController.text);
+            },
             icon: const Icon(Icons.search),
           ),
           //icon button to scan barcode

@@ -10,3 +10,13 @@ sealed class ProductEvent extends Equatable {
 final class ProductFetch extends ProductEvent {}
 
 final class ProductFetchNextPage extends ProductEvent {}
+
+//add event for product search
+final class ProductSearch extends ProductEvent {
+  final String query;
+
+  const ProductSearch({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}
