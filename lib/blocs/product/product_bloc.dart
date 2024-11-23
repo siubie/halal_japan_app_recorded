@@ -72,12 +72,17 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final int? currentPage = products.meta!.currentPage;
         //get the has reached max from products
         final bool hasReachedMax = products.meta?.lastPage == currentPage;
-        emit(
-          ProductLoaded(
-              products: products.data ?? [],
-              hasReachedMax: hasReachedMax,
-              currentPage: currentPage!),
-        );
+        //check if product is empty
+        if (products.data!.isEmpty) {
+          emit(ProductEmpty());
+        } else {
+          emit(
+            ProductLoaded(
+                products: products.data ?? [],
+                hasReachedMax: hasReachedMax,
+                currentPage: currentPage!),
+          );
+        }
       } catch (e) {
         emit(ProductError(e.toString()));
       }

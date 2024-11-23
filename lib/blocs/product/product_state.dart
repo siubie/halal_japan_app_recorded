@@ -44,3 +44,5 @@ final class ProductError extends ProductState {
   @override
   List<Object> get props => [message];
 }
+
+final class ProductEmpty extends ProductState {}

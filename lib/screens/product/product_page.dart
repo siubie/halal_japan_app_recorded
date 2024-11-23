@@ -40,6 +40,19 @@ class _ProductPageState extends State<ProductPage> {
             hintText: 'Search Product Or Scan Barcode',
             border: InputBorder.none,
           ),
+          onSubmitted: (value) {
+            //print search input
+            // print(value);
+            //check if search input is empty
+            if (value.isNotEmpty) {
+              context.read<ProductBloc>().add(
+                    ProductSearch(query: value),
+                  );
+            } else {
+              context.read<ProductBloc>().add(ProductFetch());
+            }
+            //call product search event
+          },
         ),
         actions: [
           IconButton(
@@ -117,6 +130,10 @@ class _ProductPageState extends State<ProductPage> {
           } else if (state is ProductError) {
             return Center(
               child: Text(state.message),
+            );
+          } else if (state is ProductEmpty) {
+            return const Center(
+              child: Text('No Product Found'),
             );
           } else {
             return const Center(
